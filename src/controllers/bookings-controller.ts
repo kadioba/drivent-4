@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import httpStatus from 'http-status';
 import { AuthenticatedRequest } from '@/middlewares';
+import bookingService from '@/services/bookings-service';
 
 export async function getBookingByUser(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
@@ -22,8 +23,10 @@ export async function createBooking(req: AuthenticatedRequest, res: Response) {
 
   try {
     const booking = await bookingService.createBooking(roomId, userId);
-    return res.status(httpStatus.CREATED).send({ bookingId: booking.id });
+    return res.status(httpStatus.OK).send({ bookingId: booking.id });
   } catch (error) {
+    console.log(error);
+
     if (error.name === 'NotFoundError') {
       return res.sendStatus(httpStatus.NOT_FOUND);
     }
@@ -43,6 +46,7 @@ export async function updateBooking(req: AuthenticatedRequest, res: Response) {
     const updatedBooking = await bookingService.updateBooking(bookingId, roomId, userId);
     return res.status(httpStatus.OK).send({ bookingId: updatedBooking.id });
   } catch (error) {
+    console.log(error);
     if (error.name === 'NotFoundError') {
       return res.sendStatus(httpStatus.NOT_FOUND);
     }
