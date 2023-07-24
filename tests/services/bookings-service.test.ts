@@ -11,7 +11,7 @@ import {
 } from '../factories';
 import { cleanDb } from '../helpers';
 import { createBooking } from '../factories/booking-factory';
-import bookingService from 'services/bookings-service';
+import bookingService from 'services/booking-service';
 import enrollmentRepository from '@/repositories/enrollment-repository';
 import ticketsRepository from '@/repositories/tickets-repository';
 import { init } from '@/app';
