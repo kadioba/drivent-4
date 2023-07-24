@@ -14,3 +14,13 @@ export async function createUser(params: Partial<User> = {}): Promise<User> {
     },
   });
 }
+
+export async function createUserData() {
+  return {
+    id: faker.datatype.number(),
+    email: faker.internet.email(),
+    password: faker.internet.password(6),
+    createdAt: faker.date.past(),
+    updatedAt: faker.date.recent(),
+  };
+}

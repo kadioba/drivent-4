@@ -19,3 +19,7 @@ export async function createRoomWithHotelId(hotelId: number) {
     },
   });
 }
+
+export async function createRoomData() {
+  return {};
+}
