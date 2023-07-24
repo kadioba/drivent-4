@@ -27,6 +27,33 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
+describe('getBookingByUserId', () => {
+  it('should throw notFoundError if booking is not found', async () => {
+    const userId = faker.datatype.number();
+
+    jest.spyOn(bookingRepository, 'findBookingByUserId').mockResolvedValueOnce(null);
+
+    const promise = bookingService.getBookingByUserId(userId);
+
+    expect(promise).rejects.toEqual({
+      name: 'NotFoundError',
+      message: 'No result for this search!',
+    });
+  });
+  it('should return a booking', async () => {
+    const user = await createEnrollmentWithAddress();
+    const hotel = await createHotel();
+    const room = await createRoomWithHotelId(hotel.id);
+    const booking = await createBooking(room.id, user.userId);
+
+    jest.spyOn(bookingRepository, 'findBookingByUserId').mockResolvedValueOnce({ id: booking.id, Room: room });
+
+    const response = await bookingService.getBookingByUserId(user.userId);
+
+    expect(response).toEqual({ id: booking.id, Room: room });
+  });
+});
+
 describe('createBooking', () => {
   it('should throw forbiddenError if enrollment is not found', async () => {
     const roomId = faker.datatype.number();
